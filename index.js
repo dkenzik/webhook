@@ -3,9 +3,10 @@
 require('colors');
 var program = require('commander');
 
-module.exports = function (argv) {
+var version = 'v15';
 
-  require('./lib/notifier.js')('v15', function() {
+module.exports = function (argv) {
+  require('./lib/notifier.js')(version, function() {
     program
       .version(require('./package.json').version)
       .option('-f, --firebase [firebasename]', 'Use the specified firebase instead of webhook main, for self hosting mode')
@@ -14,6 +15,7 @@ module.exports = function (argv) {
       .option('-o, --node [nodePath]', 'Use this node executable over the default one (node)')
       .option('-g, --grunt [gruntPath]', 'Use this grunt executable over the default one (grunt)')
       .option('-t, --token [authToken]', 'Use this auth token for firebase instead of prompting for login')
+      .option('-f, --force [force]', 'If true, will force update')
       .option('-e, --email [email]', 'The e-mail address to use when using the --token option');
 
     program
@@ -132,7 +134,8 @@ module.exports = function (argv) {
           node: program.node,
           grunt: program.grunt,
           token: program.token,
-          email: program.email
+          email: program.email,
+          force: program.force
         });
       });
 
@@ -200,3 +203,5 @@ module.exports = function (argv) {
     if (!program.args.length) program.help();
   });
 };
+
+module.exports.version = version;
